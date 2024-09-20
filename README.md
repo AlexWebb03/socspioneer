@@ -1,43 +1,46 @@
 # The SOCSPIONEER Package
 
-`socspioneer` is a package of configurations and helper nodes for use
-with the School of Computer Science (University of Birmingham),
-Intelligent Robotics module.
+`socspioneer` is a package of launch files, configuration and helper nodes.
 
 ## Installation
 
 **NOTE**: *This part assumes basic understanding of Linux terminal and
 commandline usage. Basic understanding of ROS workflow and package
-organisation is also important (eg. [Building a catkin workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)).*
+organisation is also important (eg. [Creating a colcon workspace](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html)).*
 
 ### Ideal Working Environment
 
-- Ubuntu 20.04
-- [ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu)
+You will save yourself much work if you complete the assignment on DICE. For the adventurous, you need
+
+- Ubuntu 22.04
+- [ROS 2 Humble](https://docs.ros.org/en/humble/Installation.html)
 (desktop-full)
 
-**NOTE**: *Installing ROS Noetic by default installs Python 3 packages. For compatibility and lack of conflicts, stick to
-using Python 3 when writing Python nodes.*
+### Install Standard ROS Packages
 
-### Install dependencies
+**You can skip this section if you are completing the assignment on DICE.**
 
 Before install everything, run the upgrade command so your system stays update to date.
 ```
 sudo apt upgrade && sudo apt update
 ```
-- `sudo apt install ros-$ROS_DISTRO-pr2-teleop ros-$ROS_DISTRO-joy ros-$ROS_DISTRO-slam-gmapping ros-$ROS_DISTRO-map-server`.
-- *Not needed when using simulation; Only required for real Pioneer
-3DX robot.* `sudo apt install ros-$ROS_DISTRO-p2os-driver ros-$ROS_DISTRO-p2os-launch ros-$ROS_DISTRO-p2os-urdf ros-$ROS_DISTRO-p2os-teleop`.
+- `sudo apt install ros-$ROS_DISTRO-slam-toolbox ros-$ROS_DISTRO-teleop-twist-keyboard ros-$ROS_DISTRO-nav2-map-server`.
+
+### Install Package Dependencies
+
+Clone the following repositories in the `src` directory of your colcon workspace.
+
+- [stage_ros2](https://github.com/tuw-robotics/stage_ros2)
+- [Stage](https://github.com/tuw-robotics/Stage)
 
 ### Build package
 
-- Clone this repo to the `src` directory of your catkin workspace.
-- Build the catkin workspace (`catkin_make` ).
-<!-- or `catkin build` -->
+- Clone this repo to the `src` directory of your colcon workspace.
+- Build the colcon workspace (`colcon build` ).
 
-**NOTE: The catkin workspace should be sourced each time a new
-terminal session is loaded (run `source devel/setup.bash`). Alternatively,
-add the line `source <catkin_ws>/devel/setup.bash` to your `.bashrc`
+**NOTE: The colcon workspace should be sourced each time a new
+terminal session is loaded (run `source install/setup.sh`). Alternatively,
+add the line `source <colcon_ws>/install/setup.sh` to your `.bashrc`
 file to avoid repeating it every time.**
 
 ## Testing Simulation and Installation
@@ -45,10 +48,9 @@ file to avoid repeating it every time.**
 If everything installed correctly, the following steps should provide
 a very simplistic simulation of a robot in a provided world map.
 
-1. In one terminal, run roscore.
-2. In another, run `rosrun stage_ros stageros <catkin_ws>/src/socspioneer/data/meeting.world`.
+1. In one terminal, run `ros2 run stage_ros2 stage_ros2 --ros-args -p world_file:=./src/socspioneer/data/meeting.world`.
 This should start a simple simulated world with a robot and a map.
-3. In a third terminal, run `roslaunch socspioneer keyboard_teleop.launch`.
+2. In a third terminal, run `ros2 launch socspioneer keyboard_teleop.launch.py`.
 
 This would allow you to move the robot using keyboard commands. Note that
 when controlling using the keyboard control, the terminal where the
@@ -60,7 +62,7 @@ before using the keys to control the robot).
 **NOTE**: *This part assumes basic understanding of ROS, ROS topics,
 messages, nodes, etc.*
 
-Running `rosrun stage_ros stageros <.world file>` will start the
+Running `ros2 run stage_ros2 stage_ros2 <.world file>` will start the
 simulator with a robot and an obstacle the provided world. The
 robot and object can be interacted with using the mouse or using
 ROS topics, nodes, etc. The world view can also be changed using
