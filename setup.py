@@ -8,6 +8,7 @@ package_name = 'socspioneer'
 setup(
     name=package_name,
     version='3.0.0',
+    packages=['socspioneer'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -24,7 +25,8 @@ setup(
     license='MIT',
     entry_points={
         'console_scripts': [
-            'twist = socspioneer.twist:main'
+            'twist_publisher = socspioneer.twist_publisher:main',
+            'marker_publisher = socspioneer.marker_publisher:main'
         ]
     }
 )
